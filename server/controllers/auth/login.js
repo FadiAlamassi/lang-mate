@@ -11,7 +11,7 @@ exports.login = (req, res, next) => {
   let user;
   getUserByUsername(username)
     .then(({ rows }) => {
-      if (rows[0]) {
+      if (rows && rows[0]) {
         const {
           id: userId, username: userName, password: dbPassword, isactive,
         } = rows[0];
