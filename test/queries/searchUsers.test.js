@@ -1,4 +1,5 @@
 const test = require('tape');
+
 const dbBuild = require('../../server/database/config/dbbuild');
 const { users: { searchUsers } } = require('../../server/database/queries');
 

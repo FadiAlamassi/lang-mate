@@ -1,4 +1,5 @@
 const { compare } = require('bcrypt');
+
 const { jwtSign } = require('../../helpers');
 const { getUserByUsername, reactivateUser } = require('../../database/queries/users');
 const { loginSchema } = require('./validation/login-validation');
