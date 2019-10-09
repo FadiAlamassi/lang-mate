@@ -26,10 +26,6 @@ const Dropdown = ({ labelText, name, languages, value, onChange, ...rest }) => {
   );
 };
 
-Dropdown.defaultProps = {
-  value: 1,
-};
-
 Dropdown.propTypes = {
   labelText: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
