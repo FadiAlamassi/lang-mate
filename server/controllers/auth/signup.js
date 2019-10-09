@@ -6,8 +6,6 @@ const { users: { getUserByEmailOrUsername, addUser, addUserInterests } } = requi
 
 
 exports.signup = (req, res, next) => {
-  const key = process.env.KEY;
-
   const {
     username, email, password, interestsId,
   } = req.body;
@@ -27,8 +25,9 @@ exports.signup = (req, res, next) => {
     })
     .then(({ rows: [addedUser] }) => {
       delete req.body.password;
+      req.body.id = addedUser.id;
       return Promise.all([
-        jwtSign({ userInfo: { username: addedUser.username, id: addedUser.id } }, key),
+        jwtSign({ userInfo: { username: addedUser.username, id: addedUser.id } }, process.env.KEY),
         addUserInterests(interestsId, addedUser.id),
       ]);
     })
