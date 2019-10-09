@@ -18,6 +18,7 @@ class Home extends Component {
 
     people: { users: [] },
     messages: { user: [], channels: [], users: [] },
+    filterdData: [],
   };
 
   componentDidMount() {
@@ -27,6 +28,18 @@ class Home extends Component {
 
   changeSearch = ({ target: { value } }) => {
     this.setState({ search: value });
+
+    api
+      .userNativeLang()
+      .then(res =>
+        res.data.map(element => element.username.startsWith(value) && element)
+      )
+      .then(res =>
+        this.setState({ filterdData: res }, () => {
+          const test = this.state.filterdData.filter(el => el !== false);
+          this.setState({ people: { users: { data: test } } });
+        })
+      );
   };
 
   showMenu = () => {
