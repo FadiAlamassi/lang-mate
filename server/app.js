@@ -1,8 +1,7 @@
 const { join } = require('path');
+
 const express = require('express');
 const cookieParser = require('cookie-parser');
-// middlewares  
-const cors = require('cors');
 const compression = require('compression');
 const morgan = require('morgan');
 
@@ -17,8 +16,6 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-app.use(cors());
-app.use(express.json());
 app.use(compression());
 app.use('/api/v1/', router);
 
