@@ -10,8 +10,8 @@ import Input from '../../common/Input';
 import Button from '../../common/Button';
 import Dropdown from '../../common/Dropdown';
 import Checkbox from '../../common/Checkbox';
-import './index.css';
 import auth from '../../Auth/auth';
+import './index.css';
 
 export default class signup extends Component {
   state = {
@@ -23,8 +23,8 @@ export default class signup extends Component {
     nativeLangId: 1,
     learningLangId: 1,
     tab: 0,
-    errMsg: '',
     languages: [],
+    errors: {},
   };
 
   componentDidMount() {
@@ -63,23 +63,32 @@ export default class signup extends Component {
       }
       return e;
     });
+
     this.setState({
       interests: newIntersts,
     });
   };
 
   nextTab = () => {
+    this.setState({ errors: {} });
     const { tab, username, email, password, confirmPassword } = this.state;
     if (tab === 0) {
       signupValidation
-        .validate({ username, email, password, confirmPassword })
+        .validate(
+          { username, email, password, confirmPassword },
+          { abortEarly: false }
+        )
         .then(() => {
           this.setState({
             tab: tab + 1,
           });
         })
-        .catch(error => {
-          this.setState({ errMsg: error.errors[0] });
+        .catch(({ inner: validationErrors }) => {
+          const errors = {};
+          validationErrors.forEach(({ path, message }) => {
+            errors[path] = message;
+          });
+          this.setState({ errors });
         });
     } else {
       this.setState({
@@ -96,45 +105,32 @@ export default class signup extends Component {
   filterInterests = array => array.filter(e => e.checked).map(e => e.id);
 
   handleSignup = e => {
+    e.preventDefault();
     const {
       history: { push },
     } = this.props;
     const { setUserInfo } = this.props;
-
-    e.preventDefault();
-    const {
-      username,
-      email,
-      password,
-      nativeLangId,
-      learningLangId,
-      interests,
-    } = this.state;
-    const interestsId = this.filterInterests(interests);
-    const userInfo = {
-      username,
-      email,
-      password,
-      nativeLangId,
-      learningLangId,
-      interestsId,
-    };
+    const userInfo = { ...this.state };
+    userInfo.interestsId = this.filterInterests(userInfo.interests);
 
     api
       .signUp(userInfo)
-      .then(res => {
-        if (res.isSuccess) {
-          const { id: userId, username: userName } = res.data;
+      .then(({ isSuccess, data, message }) => {
+        if (isSuccess) {
+          const { id: userId, username: userName } = data;
           const userInformation = { userId, userName };
           auth.isAuthenticated = true;
           auth.setUserInfo(userInformation);
-          setUserInfo(res.data);
-
+          setUserInfo(data);
           push('/');
         }
-        if (res.message) throw Error(res.message);
+        if (message) throw Error(message);
       })
-      .catch(err => alert(err.message));
+      .catch(({ message }) => {
+        this.setState({ errors: { [message.split(' ')[0]]: message } }, () =>
+          this.setState({ tab: 0 })
+        );
+      });
   };
 
   render() {
@@ -146,10 +142,14 @@ export default class signup extends Component {
       nativeLangId,
       learningLangId,
       tab,
-      Allinterests,
       interests,
-      errMsg,
       languages,
+      errors: {
+        username: usernameError,
+        email: emailError,
+        password: passwordError,
+        confirmPassword: confirmPasswordError,
+      },
     } = this.state;
     const {
       history: {
@@ -172,7 +172,10 @@ export default class signup extends Component {
       newPathname = '/';
     }
 
-    const { location } = this.props;
+    const {
+      history: { goBack },
+      location,
+    } = this.props;
     if (auth.isAuthenticated) {
       return (
         <Redirect
@@ -187,15 +190,16 @@ export default class signup extends Component {
     return (
       <div className="signup">
         <div className="signup__body">
-          {tab !== 0 ? (
+          {tab === 0 && (
+            <BackButton className="back__button" back={() => goBack()} />
+          )}
+          {tab !== 0 && (
             <BackButton
               className="back__button"
               back={() => this.previousTab()}
             />
-          ) : (
-            ''
           )}
-          {tab === 0 ? (
+          {tab === 0 && (
             <>
               <h2 className="signup__heading">Join Us Now</h2>
               <div className="signup__form">
@@ -205,37 +209,47 @@ export default class signup extends Component {
                   className="signup__input"
                   label="username"
                   placeholder="Username"
-                  value={username.value}
+                  value={username}
                   onChange={this.handleChange}
                 />
+                {usernameError && (
+                  <p className="error-message">{usernameError}</p>
+                )}
                 <Input
                   type="email"
                   name="email"
                   className="signup__input"
                   label="email"
                   placeholder="Email"
-                  value={email.value}
+                  value={email}
                   onChange={this.handleChange}
                 />
+                {emailError && <p className="error-message">{emailError}</p>}
+
                 <Input
                   type="password"
                   name="password"
                   className="signup__input"
                   label="passeord"
                   placeholder="Password"
-                  value={password.value}
+                  value={password}
                   onChange={this.handleChange}
                 />
+                {passwordError && (
+                  <p className="error-message">{passwordError}</p>
+                )}
                 <Input
                   type="password"
                   name="confirmPassword"
                   className="signup__input"
                   label="confirmPassword"
                   placeholder="Confirm Password"
-                  value={confirmPassword.value}
+                  value={confirmPassword}
                   onChange={this.handleChange}
                 />
-                <span className="error-msg">{errMsg || ''}</span>
+                {confirmPasswordError && (
+                  <p className="error-message">{confirmPasswordError}</p>
+                )}
                 <Button
                   text="Next"
                   className="signup__button"
@@ -243,58 +257,48 @@ export default class signup extends Component {
                 />
               </div>
             </>
-          ) : (
-            ''
           )}
-          {tab === 1 ? (
+          {tab === 1 && (
             <>
               <h2 className="signup__heading">Choose Languages</h2>
-              {languages ? (
+              {languages && (
                 <>
                   <Dropdown
                     labelText="Native Language"
                     name="nativeLangId"
                     languages={languages}
-                    value={nativeLangId.id}
+                    value={+nativeLangId}
                     onChange={this.handleChange}
                   />
                   <Dropdown
                     labelText="Learning Language"
                     name="learningLangId"
                     languages={languages}
-                    value={learningLangId.id}
+                    value={+learningLangId}
                     onChange={this.handleChange}
                   />
                 </>
-              ) : (
-                ''
               )}
-
               <Button
                 text="Next"
                 className="signup__button"
                 onClick={this.nextTab}
               />
             </>
-          ) : (
-            ''
           )}
-          {tab === 2 ? (
+          {tab === 2 && (
             <>
               <h2 className="signup__heading">Choose Interests</h2>
               <div className="checkBoxes">
-                {interests
-                  ? interests.map(({ id, name }, i) => (
-                      <Checkbox
-                        key={id}
-                        id={id}
-                        value={name}
-                        onClick={this.handleCheck}
-                        name="interests"
-                        checked={() => interests[i] === Allinterests[i]}
-                      />
-                    ))
-                  : ''}
+                {interests &&
+                  interests.map(interest => (
+                    <Checkbox
+                      key={interest.id}
+                      onClick={this.handleCheck}
+                      checkName="interests"
+                      {...interest}
+                    />
+                  ))}
               </div>
               <Button
                 text="Sign Up"
@@ -302,8 +306,6 @@ export default class signup extends Component {
                 onClick={this.handleSignup}
               />
             </>
-          ) : (
-            ''
           )}
         </div>
       </div>
