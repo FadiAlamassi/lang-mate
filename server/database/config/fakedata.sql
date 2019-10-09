@@ -1,24 +1,3 @@
-INSERT INTO languages
-  (name)
-VALUES
-  ('arabic'),
-  ('english'),
-  ('french'),
-  ('spanish'),
-  ('dutch'),
-  ('japanese');
-
-INSERT INTO interests
-  (name)
-VALUES
-  ('music'),
-  ('sports'),
-  ('football'),
-  ('reading'),
-  ('novels'),
-  ('games'),
-  ('swimming');
-
 INSERT INTO users
   (username, email, password, isActive, native_lang_id, learning_lang_id)
 VALUES
