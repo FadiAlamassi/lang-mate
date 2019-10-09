@@ -1,4 +1,8 @@
 /* eslint-disable no-unused-vars */
+exports.clientError = (req, res) => {
+  res.status(404).send({ message: 'Page Not Found' });
+};
+
 exports.errors = (err, req, res, next) => {
   // eslint-disable-next-line no-console
   console.log(err);
