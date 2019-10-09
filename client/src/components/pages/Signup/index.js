@@ -111,6 +111,7 @@ export default class signup extends Component {
     } = this.props;
     const { setUserInfo } = this.props;
     const userInfo = { ...this.state };
+    delete userInfo.errors;
     userInfo.interestsId = this.filterInterests(userInfo.interests);
 
     api
