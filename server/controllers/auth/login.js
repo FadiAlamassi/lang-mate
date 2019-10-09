@@ -5,7 +5,6 @@ const { loginSchema } = require('./validation/login-validation');
 
 exports.login = (req, res, next) => {
   const { username, password } = req.body;
-  console.log(req.body);
   if (!username || !password) throw ({ code: 400, msg: 'bad request !!!!' });
 
   const key = process.env.KEY;
