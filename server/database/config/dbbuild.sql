@@ -14,8 +14,8 @@ CREATE TABLE interests (
 
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
-  username VARCHAR(255) NOT NULL,
-  email VARCHAR(255) NOT NULL,
+  username VARCHAR(255) UNIQUE NOT NULL,
+  email VARCHAR(255) UNIQUE NOT NULL ,
   password VARCHAR(255) NOT NULL,
   isActive BOOLEAN NOT NULL,
   bio VARCHAR(255),
@@ -46,5 +46,26 @@ CREATE TABLE messages (
   content VARCHAR(255) NOT NULL,
   sent_at TIMESTAMPTZ NOT NULL
 );
+
+INSERT INTO languages
+  (name)
+VALUES
+  ('arabic'),
+  ('english'),
+  ('french'),
+  ('spanish'),
+  ('dutch'),
+  ('japanese');
+
+INSERT INTO interests
+  (name)
+VALUES
+  ('music'),
+  ('sports'),
+  ('football'),
+  ('reading'),
+  ('novels'),
+  ('games'),
+  ('swimming');
 
 COMMIT;
