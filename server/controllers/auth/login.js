@@ -11,11 +11,12 @@ exports.login = (req, res, next) => {
   let user;
   getUserByUsername(username)
     .then(({ rows }) => {
-      if (rows && rows[0]) {
-        const { id: userId, username: userName } = rows[0];
+      if (rows[0]) {
+        const {
+          id: userId, username: userName, password: dbPassword, isactive,
+        } = rows[0];
         user = { userId, userName };
-        const [{ id: dbId, password: dbPassword, isactive }] = rows;
-        id = dbId;
+        id = userId;
         const reactivePromise = isactive ? Promise.resolve(true) : reactivateUser();
         return Promise.all([compare(password, dbPassword), reactivePromise]);
       }
