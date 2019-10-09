@@ -57,9 +57,6 @@ class Profile extends Component {
               <h1 className="profile__username">
                 {upperCase(userInfo.username)}
               </h1>
-              <Link to={`/channel/${userInfo.username}/${userInfo.id}`}>
-                <Button className="profile__chat-btn" text="Chat" />
-              </Link>
               <div className="profile__lang--native">
                 <h4 className="profile__lang__header">Native Language</h4>
                 <div className="profile__lang__info">
