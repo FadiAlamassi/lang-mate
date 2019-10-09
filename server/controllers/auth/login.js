@@ -1,15 +1,18 @@
 const { compare } = require('bcrypt');
 const { jwtSign } = require('../../helpers');
 const { getUserByUsername, reactivateUser } = require('../../database/queries/users');
+const { loginSchema } = require('./validation/login-validation');
 
 exports.login = (req, res, next) => {
   const { username, password } = req.body;
+  console.log(req.body);
   if (!username || !password) throw ({ code: 400, msg: 'bad request !!!!' });
 
   const key = process.env.KEY;
   let id;
   let user;
-  getUserByUsername(username)
+  loginSchema.validate(req.body)
+    .then(() => getUserByUsername(username))
     .then(({ rows }) => {
       if (rows && rows[0]) {
         const { id: userId, username: userName } = rows[0];
