@@ -211,11 +211,9 @@ export default class signup extends Component {
                   label="username"
                   placeholder="Username"
                   value={username}
+                  errMsg={usernameError}
                   onChange={this.handleChange}
                 />
-                {usernameError && (
-                  <p className="error-message">{usernameError}</p>
-                )}
                 <Input
                   type="email"
                   name="email"
@@ -223,10 +221,9 @@ export default class signup extends Component {
                   label="email"
                   placeholder="Email"
                   value={email}
+                  errMsg={emailError}
                   onChange={this.handleChange}
                 />
-                {emailError && <p className="error-message">{emailError}</p>}
-
                 <Input
                   type="password"
                   name="password"
@@ -234,11 +231,9 @@ export default class signup extends Component {
                   label="passeord"
                   placeholder="Password"
                   value={password}
+                  errMsg={passwordError}
                   onChange={this.handleChange}
                 />
-                {passwordError && (
-                  <p className="error-message">{passwordError}</p>
-                )}
                 <Input
                   type="password"
                   name="confirmPassword"
@@ -246,11 +241,9 @@ export default class signup extends Component {
                   label="confirmPassword"
                   placeholder="Confirm Password"
                   value={confirmPassword}
+                  errMsg={confirmPasswordError}
                   onChange={this.handleChange}
                 />
-                {confirmPasswordError && (
-                  <p className="error-message">{confirmPasswordError}</p>
-                )}
                 <Button
                   text="Next"
                   className="signup__button"
