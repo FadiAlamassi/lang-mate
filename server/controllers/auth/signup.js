@@ -1,19 +1,16 @@
 const { hash } = require('bcrypt');
+
 const { jwtSign } = require('../../helpers');
 const { signupSchema } = require('./validation/signup-validation');
 const { users: { getUserByEmailOrUsername, addUser, addUserInterests } } = require('../../database/queries');
 
 
 exports.signup = (req, res, next) => {
-  const key = process.env.KEY;
   const {
-    username, email, password, nativeLangId, learningLangId, interestsId,
+    username, email, password, interestsId,
   } = req.body;
-  const userIfos = {
-    username, email, password, nativeLangId, learningLangId, interestsId,
-  };
-  let userInfo;
-  signupSchema.validate(userIfos)
+
+  signupSchema.validate(req.body)
     .then(() => getUserByEmailOrUsername(email, username))
     .then(({ rows }) => {
       if (rows.length !== 0) {
@@ -22,17 +19,21 @@ exports.signup = (req, res, next) => {
       }
     })
     .then(() => hash(password, 10))
-    .then((hashed) => addUser({ ...userIfos, password: hashed }))
+    .then((hashed) => {
+      req.body.password = hashed;
+      return addUser({ ...req.body });
+    })
     .then(({ rows: [addedUser] }) => {
-      userInfo = addedUser;
+      delete req.body.password;
+      req.body.id = addedUser.id;
       return Promise.all([
-        jwtSign({ userInfo: { username: addedUser.username, id: addedUser.id } }, key),
+        jwtSign({ userInfo: { username: addedUser.username, id: addedUser.id } }, process.env.KEY),
         addUserInterests(interestsId, addedUser.id),
       ]);
     })
     .then(([signedPayload]) => {
       res.cookie('token', signedPayload, { maxAge: 86400000 });
-      res.send({ isSuccess: true, data: userInfo });
+      res.send({ isSuccess: true, data: req.body });
     })
     .catch(next);
 };
