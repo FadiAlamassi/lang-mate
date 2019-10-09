@@ -1,7 +1,6 @@
 const { compare } = require('bcrypt');
 const { jwtSign } = require('../../helpers');
 const { getUserByUsername, reactivateUser } = require('../../database/queries/users');
-const { loginSchema } = require('./validation/login-validation');
 
 exports.login = (req, res, next) => {
   const { username, password } = req.body;
@@ -10,8 +9,7 @@ exports.login = (req, res, next) => {
   const key = process.env.KEY;
   let id;
   let user;
-  loginSchema.validate(req.body)
-    .then(() => getUserByUsername(username))
+  getUserByUsername(username)
     .then(({ rows }) => {
       if (rows && rows[0]) {
         const { id: userId, username: userName } = rows[0];
