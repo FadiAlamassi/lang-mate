@@ -17,29 +17,27 @@ class Home extends Component {
     search: '',
 
     people: { users: [] },
+    filteredPeople: { users: [] },
     messages: { user: [], channels: [], users: [] },
-    filterdData: [],
   };
 
   componentDidMount() {
-    api.userNativeLang().then(res => this.setState({ people: { users: res } }));
+    api.userNativeLang().then(res =>
+      this.setState({ people: { users: res } }, () => {
+        this.setState({ filteredPeople: { users: res } });
+      })
+    );
+
     api.getChannelsMessages().then(res => this.setState({ messages: res }));
   }
 
   changeSearch = ({ target: { value } }) => {
     this.setState({ search: value });
-
-    api
-      .userNativeLang()
-      .then(res =>
-        res.data.map(element => element.username.startsWith(value) && element)
-      )
-      .then(res =>
-        this.setState({ filterdData: res }, () => {
-          const test = this.state.filterdData.filter(el => el !== false);
-          this.setState({ people: { users: { data: test } } });
-        })
-      );
+    const { people } = this.state;
+    const dataFilterd = people.users.data
+      .map(element => element.username.startsWith(value) && element)
+      .filter(e => e !== false);
+    this.setState({ filteredPeople: { users: { data: dataFilterd } } });
   };
 
   showMenu = () => {
@@ -69,7 +67,7 @@ class Home extends Component {
   render() {
     const { userInfo } = this.props;
     const {
-      people: {
+      filteredPeople: {
         users: { data },
       },
       search,
