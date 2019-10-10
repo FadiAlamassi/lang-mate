@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import UserCard from '../../../common/UserCard';
+import { UserCard } from '../../../common';
 import './index.css';
 
 const People = ({ users }) => {

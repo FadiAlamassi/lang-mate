@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import MessageCard from '../../../common/MessageCard';
+import { MessageCard } from '../../../common';
 import './index.css';
 
 const Messages = ({ messages: { user, channels, users } }) => {

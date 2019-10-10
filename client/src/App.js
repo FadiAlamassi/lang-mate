@@ -1,15 +1,17 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import Login from './components/pages/Login';
-import Signup from './components/pages/Signup';
-import Profile from './components/pages/Profile';
-import Landing from './components/pages/Landing';
-import Home from './components/pages/Home';
-import Chat from './components/pages/Chat';
-import Settings from './components/pages/Settings';
+import {
+  Login,
+  Signup,
+  Profile,
+  Landing,
+  Home,
+  Chat,
+  Settings,
+} from './components/pages';
+import { PageNotFound } from './components/common';
 import auth from './components/Auth/auth';
-import PageNotFound from './components/common/pageNotFound';
 import PrivateRoute from './components/Auth/PrivateRoute';
 
 import './App.css';

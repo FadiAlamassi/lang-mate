@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import Input from '../../common/Input';
-import Avatar from '../../common/Avatar';
-import BackButton from '../../common/BackButton';
-import Button from '../../common/Button';
+import PropTypes from 'prop-types';
+
+import { Input, Avatar, BackButton, Button } from '../../common';
 import api from '../../../services/api';
 
 import './index.css';
@@ -59,12 +58,12 @@ class Chat extends Component {
           </div>
         </header>
         <div className="chat__body">
-          {messages.map(message => (
+          {messages.map(messageItem => (
             <h4
-              key={message.id}
-              className={message.user_id === 2 ? 'green' : 'gray'}
+              key={messageItem.id}
+              className={messageItem.user_id === 2 ? 'green' : 'gray'}
             >
-              {message.content}
+              {messageItem.content}
             </h4>
           ))}
         </div>
@@ -89,5 +88,10 @@ class Chat extends Component {
     );
   }
 }
+
+Chat.propTypes = {
+  match: PropTypes.objectOf(Object).isRequired,
+  history: PropTypes.objectOf(Object).isRequired,
+};
 
 export default Chat;

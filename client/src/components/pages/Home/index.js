@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import Input from '../../common/Input';
-import Avatar from '../../common/Avatar';
-import UserMenu from '../../common/UserMenu';
+import PropTypes from 'prop-types';
+
+import { Input, Avatar, UserMenu } from '../../common';
 import People from './People';
 import Messages from './Messages';
 import api from '../../../services/api';
 import { filter } from '../../assets/svgPaths';
-import './index.css';
 import auth from '../../Auth/auth';
+import './index.css';
 
 class Home extends Component {
   state = {
@@ -22,7 +22,6 @@ class Home extends Component {
 
   componentDidMount() {
     api.userNativeLang().then(res => this.setState({ people: { users: res } }));
-    api.getChannelsMessages().then(res => this.setState({ messages: res }));
   }
 
   changeSearch = ({ target: { value } }) => {
@@ -145,5 +144,10 @@ class Home extends Component {
     );
   }
 }
+
+Home.propTypes = {
+  userInfo: PropTypes.objectOf(Object).isRequired,
+  history: PropTypes.objectOf(Object).isRequired,
+};
 
 export default Home;
