@@ -23,6 +23,7 @@ const Input = ({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
+        autoComplete="off"
         required
       />
       <span className="err-msg">{errMsg}</span>
