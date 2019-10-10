@@ -1,4 +1,5 @@
 const router = require('express').Router();
+
 const {
   auth: {
     login, logout, signup, auth, isAuth,
@@ -15,7 +16,7 @@ const {
   messages: { addChannel, getChannelMessages, getChannels },
   interests: { getAllInterests },
   languages: { getAllLanguages },
-  errors: { errors },
+  errors: { errors, clientError },
 } = require('../controllers');
 
 router.post('/signup', signup);
@@ -41,6 +42,8 @@ router.put('/users/deactivate', deactivateUser);
 router.put('/users/change-password', changePassword);
 router.get('/users/channels/', getUserChannels);
 
+router.use(clientError);
 router.use(errors);
+
 
 module.exports = router;

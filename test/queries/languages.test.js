@@ -1,4 +1,5 @@
 const test = require('tape');
+
 const dbBuild = require('../../server/database/config/dbbuild');
 const { languages: { getLanguages } } = require('../../server/database/queries/');
 
