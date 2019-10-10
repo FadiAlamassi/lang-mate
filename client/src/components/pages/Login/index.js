@@ -1,13 +1,12 @@
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import './index.css';
 import PropTypes from 'prop-types';
-import Button from '../../common/Button';
-import Input from '../../common/Input';
-import BackButton from '../../common/BackButton';
+
+import { Button, Input, BackButton } from '../../common';
 import api from '../../../services/api';
 import auth from '../../Auth/auth';
+import './index.css';
 
 class Login extends Component {
   state = {

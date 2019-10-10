@@ -4,12 +4,8 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
 import api from '../../../services/api';
+import { BackButton, Input, Button, Dropdown, Checkbox } from '../../common';
 import signupValidation from '../utils/signupValidation';
-import BackButton from '../../common/BackButton';
-import Input from '../../common/Input';
-import Button from '../../common/Button';
-import Dropdown from '../../common/Dropdown';
-import Checkbox from '../../common/Checkbox';
 import auth from '../../Auth/auth';
 import './index.css';
 
