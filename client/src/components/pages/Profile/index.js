@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import Avatar from '../../common/Avatar';
-import BackButton from '../../common/BackButton';
-import Button from '../../common/Button';
+
+import { Button, Avatar, BackButton } from '../../common';
 import upperCase from '../../../helpers/capitalizeFirstLetter';
-import './index.css';
 import api from '../../../services/api';
+import './index.css';
 
 class Profile extends Component {
   state = { userInfo: null };
