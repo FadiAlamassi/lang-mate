@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import './index.css';
 
 const Avatar = ({ width, height, src, altText, className }) => {

@@ -1,4 +1,5 @@
 const { compare } = require('bcrypt');
+
 const { jwtSign } = require('../../helpers');
 const { getUserByUsername, reactivateUser } = require('../../database/queries/users');
 const { loginSchema } = require('./validation/login-validation');
@@ -14,10 +15,11 @@ exports.login = (req, res, next) => {
     .then(() => getUserByUsername(username))
     .then(({ rows }) => {
       if (rows && rows[0]) {
-        const { id: userId, username: userName } = rows[0];
+        const {
+          id: userId, username: userName, password: dbPassword, isactive,
+        } = rows[0];
         user = { userId, userName };
-        const [{ id: dbId, password: dbPassword, isactive }] = rows;
-        id = dbId;
+        id = userId;
         const reactivePromise = isactive ? Promise.resolve(true) : reactivateUser();
         return Promise.all([compare(password, dbPassword), reactivePromise]);
       }

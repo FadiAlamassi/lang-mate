@@ -1,5 +1,6 @@
 const test = require('tape');
 const supertest = require('supertest');
+
 const app = require('../../server/app');
 const { token } = require('./cookie.test');
 const dbBuild = require('../../server/database/config/dbbuild');

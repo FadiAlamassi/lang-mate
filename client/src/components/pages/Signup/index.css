@@ -35,6 +35,8 @@
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+  width: 90%;
+  margin: auto;
 }
 
 .signup__heading{
@@ -50,7 +52,7 @@
   background: #DADADA;
 }
 
-.error-msg{
+.err-msg{
   color: red;
 }
 

@@ -1,4 +1,5 @@
 const test = require('tape');
+
 const { users: { getUsersByLang } } = require('../../server/database/queries');
 const dbBuild = require('../../server/database/config/dbbuild');
 
