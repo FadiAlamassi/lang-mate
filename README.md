@@ -45,7 +45,8 @@ We focused on a specific user story to achieve your goals in this sprint.
 
 ## **Database Schema :**
 
-![alt text](https://cdn.discordapp.com/attachments/607975266597339186/625229320750759966/unknown.png)
+![Database Schema](https://i.ibb.co/HzTrZ7Z/schema.png)
+
 
 ## **Set up the app locally :**
 
