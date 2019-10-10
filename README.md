@@ -44,9 +44,7 @@ We focused on a specific user story to achieve your goals in this sprint.
 * [ ] As a user, I want to chat others for practicing the language.
 
 ## **Database Schema :**
-
-![Database Schema](https://i.ibb.co/HzTrZ7Z/schema.png)
-
+![alt text](https://serving.photos.photobox.com/84970678035bfcf2463e6c3a5c98936f5ee75c44252a8c81386637c4f2358f9686508dcb.jpg)
 
 ## **Set up the app locally :**
 
